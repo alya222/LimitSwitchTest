@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import static edu.wpi.first.wpilibj.XboxController.Button.*;
 
-import frc.robot.Constants.*;
+
+import static frc.robot.Constants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,7 +26,7 @@ import frc.robot.Constants.*;
 public class RobotContainer {
 
   // Drive Controller
-  private XboxController xbox = new XboxController(0);
+  private XboxController xbox = new XboxController(kXboxPort);
 
   // The robot's subsystems and commands are defined here...
 
@@ -52,12 +54,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // shoot
+    // move motor a set number of rotations with one press
     new JoystickButton(xbox, kY.value)
     .onTrue(moveMotorToPosition);
 
-    // intake
-    new JoystickButton(xbox, kY.value)
+    // motor runs while the button is held
+    new JoystickButton(xbox, kA.value)
     .whileTrue(runMotor);
   }
 

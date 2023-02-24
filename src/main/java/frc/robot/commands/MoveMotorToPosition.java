@@ -5,8 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Motor;
@@ -33,8 +31,8 @@ public class MoveMotorToPosition extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> motor.getTestMotorEncoder().setPosition(0), motor),
-      new RunCommand(() -> motor.setSpeed(-0.3))
-      .until(() -> motor.isEncoderAtPosition(motorRotations)),
+      new RunCommand(() -> motor.setSpeed(0.3))
+      .until(() -> motor.isEncoderAtPosition(motorRotations)).until(motor::limitSwitchPressed),
       new RunCommand(() -> motor.setSpeed(0)).withTimeout(.1)
 
     );

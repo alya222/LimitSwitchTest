@@ -16,23 +16,22 @@ import static frc.robot.Constants.*;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
-public class MoveMotorToPosition extends SequentialCommandGroup {
+public class SetMotorPosition extends SequentialCommandGroup {
 
   // Drive Subsystem
   private final Motor motor;
 
 
   /** Creates a new MoveAndBalance. */
-  public MoveMotorToPosition(Motor motorSubsystem) {
+  public SetMotorPosition(Motor motorSubsystem) {
 
     motor = motorSubsystem;
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> motor.getTestMotorEncoder().setPosition(0), motor),
-      new RunCommand(() -> motor.setSpeed(0.3))
-      .until(() -> motor.isEncoderAtPosition(50)).unless(motor::limitSwitchPressed),
+      new RunCommand(() -> motor.setMotorAutoSpeed(autoSpeed, motorRotations, positionTolerance))
+      .until(() -> motor.isEncoderAtSetPosition(motorRotations, positionTolerance)),
       new RunCommand(() -> motor.setSpeed(0)).withTimeout(.1)
 
     );

@@ -5,9 +5,12 @@
 package frc.robot;
 
 import frc.robot.commands.MoveMotorToPosition;
+import frc.robot.commands.SetMotorPosition;
+import frc.robot.commands.PIDMoveMotorToPosition;
 import frc.robot.commands.RunMotor;
 import frc.robot.subsystems.Motor;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -35,6 +38,10 @@ public class RobotContainer {
 
   private final MoveMotorToPosition moveMotorToPosition = new MoveMotorToPosition(motor);
 
+  private final SetMotorPosition setMotorPosition = new SetMotorPosition(motor);
+
+  private final PIDMoveMotorToPosition pidMoveMotorToPosition = new PIDMoveMotorToPosition(motor, 10);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -60,6 +67,11 @@ public class RobotContainer {
     // motor runs while the button is held
     new JoystickButton(xbox, kA.value)
     .whileTrue(runMotor);
+
+    // move to set position each time 
+    new JoystickButton(xbox, kX.value)
+    .onTrue(pidMoveMotorToPosition);
+
   }
 
   /**

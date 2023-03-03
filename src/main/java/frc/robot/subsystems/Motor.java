@@ -30,10 +30,11 @@ public class Motor extends SubsystemBase {
   public Motor() {
     testMotor.restoreFactoryDefaults();
     testMotor.setIdleMode(IdleMode.kBrake);
+    testMotorEncoder.setPosition(0);
     testMotor.burnFlash();
 
     forwardLimit.enableLimitSwitch(false);
-    SmartDashboard.putBoolean("Forward Limit Enabled", forwardLimit.isLimitSwitchEnabled());
+    
   }
 
   /**
@@ -51,18 +52,63 @@ public class Motor extends SubsystemBase {
   }
 
   public Boolean isEncoderAtPosition (double position) {
+    // only works if moving in a positive direction
       return testMotorEncoder.getPosition() >= position;
+    
   }
 
+  public Boolean isEncoderAtSetPosition (double position, double tolerance) {
+    // only works if moving in a positive direction
+    if (motorShouldMovePositive(positionTolerance)) {
+
+      return testMotorEncoder.getPosition() - tolerance >= position;
+    
+    } else {
+
+      return testMotorEncoder.getPosition() + tolerance <= position;
+    }
+    
+  }
+
+
+  public void setMotorAutoSpeed (double speed, double position, double tolerance) {
+
+    if (motorShouldMovePositive(positionTolerance)) {
+      
+      testMotor.set(speed);
+
+    } else if (motorShouldMoveNegative(positionTolerance)) {
+      
+      testMotor.set(-speed);
+
+    } else {}
+
+  }
+
+  public Boolean motorShouldMovePositive (double tolerance) {
+    return motorRotations - testMotorEncoder.getPosition() > 0 + tolerance;
+  }
+
+  public Boolean motorShouldMoveNegative (double tolerance) {
+    return motorRotations - testMotorEncoder.getPosition() < 0 - tolerance;
+  }
+
+
   // method checks whether higher lift limit switch is pressed
-  public boolean limitSwitchPressed() {
+  public Boolean limitSwitchPressed() {
     return forwardLimit.isLimitSwitchEnabled();
   }
 
+  public Double getEncoderPosition () {
+    return testMotorEncoder.getPosition();
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Forward Limit Enabled", forwardLimit.isLimitSwitchEnabled());
+    SmartDashboard.putNumber("Motor Encoder Counts", getEncoderPosition());
+
   }
 
   @Override

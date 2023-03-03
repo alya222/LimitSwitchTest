@@ -17,9 +17,15 @@ public final class Constants {
   // xbox controller port
 	public static final int kXboxPort = 0;
 
-  // carriage motor port
+  // test motor port
 	public static final int testMotorPort = 1;
 
-  // carriage motor port
-	public static final double motorRotations = 10;
+  // motor rotations
+	public static final double motorRotations = 100;
+
+  // auto motor rotation speed
+  public static final double autoSpeed = 0.3;
+
+  // position tolerance (measured in rotations)
+  public static final double positionTolerance = 10;
 }

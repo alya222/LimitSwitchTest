@@ -19,7 +19,7 @@ public class RunMotor extends CommandBase {
   public RunMotor(Motor motorSubsystem) {
     motor = motorSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(motorSubsystem);
+    addRequirements(motor);
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +29,7 @@ public class RunMotor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    motor.setSpeed(-.3);
+    motor.setSpeed(.3);
   }
 
   // Called once the command ends or is interrupted.

@@ -51,7 +51,13 @@ public class Motor extends SubsystemBase {
     return testMotorEncoder;
   }
 
-  public Boolean isEncoderAtPosition (double position) {
+  public Boolean isEncoderAtInPosition (double position) {
+    // only works if moving in a positive direction
+      return testMotorEncoder.getPosition() <= position;
+    
+  }
+
+  public Boolean isEncoderAtOutPosition (double position) {
     // only works if moving in a positive direction
       return testMotorEncoder.getPosition() >= position;
     
@@ -70,6 +76,10 @@ public class Motor extends SubsystemBase {
     
   }
 
+  public Boolean isEncoderInRange (double position, double tolerance) {
+    return testMotorEncoder.getPosition() - tolerance >= position && testMotorEncoder.getPosition() + tolerance <= position;
+    
+  }
 
   public void setMotorAutoSpeed (double speed, double position, double tolerance) {
 

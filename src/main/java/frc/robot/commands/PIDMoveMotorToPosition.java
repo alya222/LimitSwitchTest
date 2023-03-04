@@ -23,15 +23,15 @@ public class PIDMoveMotorToPosition extends CommandBase {
    *
    * @param motorSubsystem The subsystem used by this command.
    */
-  public PIDMoveMotorToPosition(Motor motorSubsystem, double goalPosition) {
+  public PIDMoveMotorToPosition(Motor motorSubsystem, double setPoint) {
     motor = motorSubsystem;
     motorPIDController = new PIDController(.0004, 0., 0.0);
 
     motorPIDController.setTolerance(0.0035);
-    goalPosition = setPoint;
+    this.setPoint = setPoint;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(motorSubsystem);
+    addRequirements(motor);
   }
 
   // Called when the command is initially scheduled.
@@ -59,6 +59,6 @@ public class PIDMoveMotorToPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return motor.isEncoderAtPosition(setPoint);  
+    return motor.isEncoderAtInPosition(setPoint);  
   }
 }

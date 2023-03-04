@@ -27,12 +27,14 @@ public class MoveMotorToPosition extends SequentialCommandGroup {
 
     motor = motorSubsystem;
 
+    addRequirements(motor);
+
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> motor.getTestMotorEncoder().setPosition(0), motor),
       new RunCommand(() -> motor.setSpeed(0.3))
-      .until(() -> motor.isEncoderAtPosition(50)).unless(motor::limitSwitchPressed),
+      .until(() -> motor.isEncoderAtInPosition(50)).unless(motor::limitSwitchPressed),
       new RunCommand(() -> motor.setSpeed(0)).withTimeout(.1)
 
     );

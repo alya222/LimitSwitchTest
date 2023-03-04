@@ -60,6 +60,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+  
     // move motor a set number of rotations with one press
     new JoystickButton(xbox, kY.value)
     .onTrue(moveMotorToPosition);
@@ -71,6 +72,10 @@ public class RobotContainer {
     // move to set position each time 
     new JoystickButton(xbox, kX.value)
     .onTrue(pidMoveMotorToPosition);
+
+    // move to set position each time 
+    new JoystickButton(xbox, kB.value)
+    .onTrue(setMotorPosition);
 
   }
 

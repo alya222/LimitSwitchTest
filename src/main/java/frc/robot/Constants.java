@@ -27,5 +27,5 @@ public final class Constants {
   public static final double autoSpeed = 0.3;
 
   // position tolerance (measured in rotations)
-  public static final double positionTolerance = 10;
+  public static final double positionTolerance = 3;
 }

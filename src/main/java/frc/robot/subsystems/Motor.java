@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
@@ -76,11 +78,6 @@ public class Motor extends SubsystemBase {
     
   }
 
-  public Boolean isEncoderInRange (double position, double tolerance) {
-    return testMotorEncoder.getPosition() - tolerance >= position && testMotorEncoder.getPosition() + tolerance <= position;
-    
-  }
-
   public void setMotorAutoSpeed (double speed, double position, double tolerance) {
 
     if (motorShouldMovePositive(positionTolerance)) {
@@ -91,18 +88,38 @@ public class Motor extends SubsystemBase {
       
       testMotor.set(-speed);
 
+    } else if (isEncoderInRange (motorRotations, positionTolerance)) {
+
+      testMotor.set(0);
+
     } else {}
 
   }
+
+  /* let's have the set motor autospeed just give us a negative or positive 1 */
+
+  public double motorAutoSpeedSign (double goalPosition) {
+    return (goalPosition - testMotorEncoder.getPosition()) 
+    / (Math.abs(goalPosition - testMotorEncoder.getPosition()));
+  }
+
+  /*
+   * if the motor should move positive, move the motor positive until it is at the position
+   * if the motor should move negative, move the motor negative until it is at the position
+   */
 
   public Boolean motorShouldMovePositive (double tolerance) {
     return motorRotations - testMotorEncoder.getPosition() > 0 + tolerance;
   }
 
   public Boolean motorShouldMoveNegative (double tolerance) {
-    return motorRotations - testMotorEncoder.getPosition() < 0 - tolerance;
+    return motorRotations - testMotorEncoder.getPosition() < 0 + tolerance;
   }
 
+  public Boolean isEncoderInRange (double position, double tolerance) {
+    return testMotorEncoder.getPosition() - tolerance >= position && testMotorEncoder.getPosition() + tolerance <= position;
+    
+  }
 
   // method checks whether higher lift limit switch is pressed
   public Boolean limitSwitchPressed() {

@@ -32,7 +32,7 @@ public class SetMotorPosition extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new RunCommand(() -> motor.setMotorAutoSpeed(autoSpeed, motorRotations, positionTolerance))
+      new RunCommand(() -> motor.setSpeed(motor.motorAutoSpeedSign(motorRotations) * 0.3))
       .until(() -> motor.isEncoderInRange(motorRotations, positionTolerance)),
       new RunCommand(() -> motor.setSpeed(0)).withTimeout(.1)
 

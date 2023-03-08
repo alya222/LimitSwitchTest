@@ -16,14 +16,14 @@ import static frc.robot.Constants.*;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
-public class SetMotorPosition extends SequentialCommandGroup {
+public class MoveWristLevel extends SequentialCommandGroup {
 
   // Drive Subsystem
   private final Motor motor;
 
 
   /** Creates a new MoveAndBalance. */
-  public SetMotorPosition(Motor motorSubsystem) {
+  public MoveWristLevel(Motor motorSubsystem) {
 
     motor = motorSubsystem;
 

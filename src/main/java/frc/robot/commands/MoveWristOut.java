@@ -32,6 +32,7 @@ public class MoveWristOut extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      
       new RunCommand(() -> motor.setSpeed(0.3))
       .until(() -> motor.isEncoderAtOutPosition(130)),
       new RunCommand(() -> motor.setSpeed(0)).withTimeout(.1)

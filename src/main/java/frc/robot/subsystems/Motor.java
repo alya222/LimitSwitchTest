@@ -116,8 +116,8 @@ public class Motor extends SubsystemBase {
     return motorRotations - testMotorEncoder.getPosition() < 0 + tolerance;
   }
 
-  public Boolean isEncoderInRange (double position, double tolerance) {
-    return testMotorEncoder.getPosition() - tolerance >= position && testMotorEncoder.getPosition() + tolerance <= position;
+  public Boolean isEncoderInRange (double goalPosition, double tolerance) {
+    return testMotorEncoder.getPosition() + tolerance >= goalPosition && testMotorEncoder.getPosition() - tolerance <= goalPosition;
     
   }
 
@@ -135,6 +135,9 @@ public class Motor extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Forward Limit Enabled", forwardLimit.isLimitSwitchEnabled());
     SmartDashboard.putNumber("Motor Encoder Counts", getEncoderPosition());
+    SmartDashboard.putBoolean("Is Encoder In Range (Using same setPoint)?", isEncoderInRange(motorSetpoint, 5));
+    SmartDashboard.putBoolean("Is Encoder In Range (Using altered setPoint)?", isEncoderInRange(motorSetpoint + 96, 5));
+
 
   }
 

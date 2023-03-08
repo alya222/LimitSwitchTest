@@ -7,7 +7,7 @@ package frc.robot;
 import frc.robot.commands.MoveMotorToPosition;
 import frc.robot.commands.MoveWristIn;
 import frc.robot.commands.MoveWristOut;
-import frc.robot.commands.SetMotorPosition;
+import frc.robot.commands.MoveWristLevel;
 import frc.robot.commands.PIDMoveMotorToPosition;
 import frc.robot.commands.RunMotor;
 import frc.robot.subsystems.Motor;
@@ -40,9 +40,9 @@ public class RobotContainer {
 
   private final MoveMotorToPosition moveMotorToPosition = new MoveMotorToPosition(motor);
 
-  private final SetMotorPosition setMotorPosition = new SetMotorPosition(motor);
+  private final MoveWristLevel moveWristLevel = new MoveWristLevel(motor);
 
-  private final PIDMoveMotorToPosition pidMoveMotorToPosition = new PIDMoveMotorToPosition(motor, 10);
+  private final PIDMoveMotorToPosition pidMoveMotorToPosition = new PIDMoveMotorToPosition(motor, motorSetpoint);
 
   private final MoveWristIn moveWristIn = new MoveWristIn(motor);
 
@@ -72,16 +72,16 @@ public class RobotContainer {
     .onTrue(moveMotorToPosition);*/
 
     // motor runs forward while the button is held
-    new JoystickButton(xbox, kA.value)
-    .whileTrue(runMotor);
+    /*new JoystickButton(xbox, kA.value)
+    .whileTrue(runMotor);*/
 
-    // move to set position each time 
+    // move to set position (100 encoder location) each time using pid loop
     /*new JoystickButton(xbox, kX.value)
     .onTrue(pidMoveMotorToPosition);*/
 
     // move to set position (100 encoder location) each time 
     new JoystickButton(xbox, kB.value)
-    .onTrue(setMotorPosition);
+    .onTrue(moveWristLevel);
 
     // move wrist to 130 encoder location
     new JoystickButton(xbox, kLeftBumper.value)

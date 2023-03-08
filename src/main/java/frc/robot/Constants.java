@@ -27,5 +27,11 @@ public final class Constants {
   public static final double autoSpeed = 0.3;
 
   // position tolerance (measured in rotations)
-  public static final double positionTolerance = 5;
+  public static final double positionTolerance = 2;
+
+  // pid motor setpoint
+  /* ISSUES */
+  // the motor rotates to 96 rotations when the setpoint is 0
+  // the motor rotates to -96 rotations when the setpoint is 3
+  public static final double motorSetpoint = 0;
 }

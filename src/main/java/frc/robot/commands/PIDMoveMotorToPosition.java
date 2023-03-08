@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /** An example command that uses an example subsystem. */
 public class PIDMoveMotorToPosition extends CommandBase {
   
-  private final Motor motor;
+  private final Motor motorSubsystem;
   private PIDController motorPIDController;
 
   private double setPoint;
@@ -24,14 +24,15 @@ public class PIDMoveMotorToPosition extends CommandBase {
    * @param motorSubsystem The subsystem used by this command.
    */
   public PIDMoveMotorToPosition(Motor motorSubsystem, double setPoint) {
-    motor = motorSubsystem;
+    this.motorSubsystem = motorSubsystem;
     motorPIDController = new PIDController(.0004, 0., 0.0);
 
     motorPIDController.setTolerance(0.0035);
+    
     this.setPoint = setPoint;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(motor);
+    addRequirements(motorSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -41,24 +42,45 @@ public class PIDMoveMotorToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     double feedforward = -0.05;
-    double speed = motorPIDController.calculate(motor.getEncoderPosition(), setPoint);
+
+    double speed = motorPIDController.calculate(motorSubsystem.getEncoderPosition(), setPoint);
+
+    /* The code is a shortcut for the following:
+     * if (speed > 0) { speed = speed + feedforward }
+     * else { speed = speed - feedforward } 
+     * 
+     * if (speed > 1) { speed = 1.0 }
+     * else { speed = speed } 
+     * 
+     * if (speed < -1) { speed = -1.0 }
+     * else { speed = speed } 
+     */
+
     speed = (speed > 0) ? speed + feedforward : speed - feedforward;
     speed = (speed > 1 ) ? 1.0 : speed;
     speed = (speed < -1 ) ? -1 : speed; 
-    motor.setSpeed(speed * 0.5);
+
+    motorSubsystem.setSpeed(speed);
+
     SmartDashboard.putNumber("motor output: ", speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    motor.setSpeed(0);
+    motorSubsystem.setSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return motor.isEncoderAtInPosition(setPoint);  
+    return motorSubsystem.isEncoderInRange(setPoint, 5);  
   }
+
+  public void setPoint(double setPoint) {
+    this.setPoint = setPoint;
+  }
+
 }
